@@ -4,7 +4,9 @@
     "keywords": ["Array manipulation"],
     "license": "MIT",
     "require": {
-        "php": ">=5.4",
+        "php": ">=5.4"
+    },
+    "require-dev": {
         "crysalead/kahlan": "dev-master"
     },
     "autoload": {
@@ -15,6 +17,11 @@
     },
     "config": {
         "bin-dir": "bin"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
     },
     "minimum-stability": "dev"
 }

@@ -1,12 +1,12 @@
 <?php
-namespace spec\set;
+namespace set\spec\suite;
 
 use set\Set;
 use BadFunctionCallException;
 
 describe("Set", function() {
 
-    describe("merge", function() {
+    describe("::merge()", function() {
 
         it("merges two arrays", function() {
 
@@ -54,11 +54,7 @@ describe("Set", function() {
 
     });
 
-});
-
-describe("Set", function() {
-
-    describe("slice", function() {
+    describe("::slice()", function() {
 
         it("slices two arrays", function() {
             $data = ['key1' => 'val1', 'key2' => 'val2', 'key3' => 'val3'];
@@ -69,11 +65,7 @@ describe("Set", function() {
 
     });
 
-});
-
-describe("Set", function() {
-
-    describe("flatten", function() {
+    describe("::flatten()", function() {
 
         $this->expanded = [
             [
@@ -101,25 +93,17 @@ describe("Set", function() {
             '1.Author.password' => null
         ];
 
-        describe("Set::flatten", function() {
+        it("flattens", function() {
 
-            it("flattens", function() {
-
-                $result = Set::flatten($this->expanded);
-                expect($result)->toBe($this->flattened);
-
-            });
+            $result = Set::flatten($this->expanded);
+            expect($result)->toBe($this->flattened);
 
         });
 
-        describe("Set::expand", function() {
+        it("expands", function() {
 
-            it("expands", function() {
-
-                $result = Set::expand($this->flattened);
-                expect($result)->toBe($this->expanded);
-
-            });
+            $result = Set::expand($this->flattened);
+            expect($result)->toBe($this->expanded);
 
         });
 

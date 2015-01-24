@@ -11,7 +11,7 @@ class Set
      * Override values for strings identical (unlike `array_merge_recursive()`).
      *
      * @param  array ... list of array to merge.
-     * @return array The merged array.
+     * @return array     The merged array.
      */
     public static function merge()
     {
@@ -40,10 +40,10 @@ class Set
      *
      * Usage examples:
      *
-     * @param  array        $subject Array that gets split apart
-     * @param  array|string $keys An array of keys or a single key as string
-     * @return array        An array containing both arrays, having the array with requested
-     *                      keys first and the remainder as second element
+     * @param  array        $subject Array that gets split apart.
+     * @param  array|string $keys    An array of keys or a single key as string.
+     * @return array                 An array containing both arrays, having the array with requested
+     *                               keys first and the remainder as second element.
      */
     public static function slice($data, $keys)
     {
@@ -57,10 +57,10 @@ class Set
      * for each array element's key, i.e. [['Foo' => ['Bar' => 'Far']]] becomes
      * ['0.Foo.Bar' => 'Far'].
      *
-     * @param array $data array to flatten
-     * @param array $options Available options are:
-     *        - `'separator'`: String to separate array keys in path (defaults to `'.'`).
-     *        - `'path'`: Starting point (defaults to null).
+     * @param  array $data    Array to flatten.
+     * @param  array $options Available options are:
+     *                        - `'separator'`: String to separate array keys in path (defaults to `'.'`).
+     *                        - `'path'`: Starting point (defaults to null).
      * @return array
      */
     public static function flatten($data, $options = [])
@@ -86,12 +86,12 @@ class Set
     /**
      * Accepts a one-dimensional array where the keys are separated by a delimiter.
      *
-     * @param array $data The one-dimensional array to expand.
-     * @param array $options The options used when expanding the array:
-     *        - `'separator'` _string_: The delimiter to use when separating keys. Defaults
-     *          to `'.'`.
-     * @return array Returns a multi-dimensional array expanded from a one dimensional
-     *         dot-separated array.
+     * @param  array $data    The one-dimensional array to expand.
+     * @param  array $options The options used when expanding the array:
+     *                        - `'separator'` _string_: The delimiter to use when separating keys.
+     *                        (defaults to `'.'`).
+     * @return array          Returns a multi-dimensional array expanded from a one dimensional
+     *                        dot-separated array.
      */
     public static function expand(array $data, $options =[])
     {
