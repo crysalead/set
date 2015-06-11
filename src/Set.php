@@ -1,6 +1,7 @@
 <?php
 namespace set;
 
+use Exception;
 use BadFunctionCallException;
 
 class Set
@@ -16,7 +17,7 @@ class Set
     public static function merge()
     {
         if (func_num_args() < 2) {
-            throw new BadFunctionCallException("Not enough parameters.");
+            throw new BadFunctionCallException("Not enough parameters");
         }
         $args = func_get_args();
         $merged = array_shift($args);
@@ -93,7 +94,7 @@ class Set
      * @return array          Returns a multi-dimensional array expanded from a one dimensional
      *                        dot-separated array.
      */
-    public static function expand(array $data, $options =[])
+    public static function expand($data, $options =[])
     {
         $defaults = ['separator' => '.'];
         $options += $defaults;
@@ -117,4 +118,29 @@ class Set
         }
         return $result;
     }
+
+    /**
+     * Normalizes an array, and converts it to an array of `'key' => 'value'` pairs
+     * where keys must be strings.
+     *
+     * @param  array $data  The array to normalize.
+     * @return array        The normalized array.
+     */
+    public static function normalize($data)
+    {
+        $result = [];
+
+        foreach ($data as $key => $value) {
+            if (!is_int($key)) {
+                $result[$key] = $value;
+                continue;
+            }
+            if (!is_scalar($value)) {
+                throw new Exception("Invalid array format, a value can't be normalized");
+            }
+            $result[$value] = null;
+        }
+        return $result;
+    }
+
 }

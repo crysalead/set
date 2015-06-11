@@ -2,6 +2,7 @@
 namespace set\spec\suite;
 
 use set\Set;
+use Exception;
 use BadFunctionCallException;
 
 describe("Set", function() {
@@ -38,17 +39,17 @@ describe("Set", function() {
 
         });
 
-        it("returns an exception with not enough parameters", function() {
+        it("throws an exception with not enough parameters", function() {
 
             $closure = function() {
                 Set::merge();
             };
-            expect($closure)->toThrow(new BadFunctionCallException());
+            expect($closure)->toThrow(new BadFunctionCallException("Not enough parameters"));
 
             $closure = function() {
                 Set::merge([]);
             };
-            expect($closure)->toThrow(new BadFunctionCallException());
+            expect($closure)->toThrow(new BadFunctionCallException("Not enough parameters"));
 
         });
 
@@ -104,6 +105,31 @@ describe("Set", function() {
 
             $result = Set::expand($this->flattened);
             expect($result)->toBe($this->expanded);
+
+        });
+
+    });
+
+    describe("::normalize()", function() {
+
+        it("normalizes arrays", function() {
+
+            $result = Set::normalize(['one', 'two', 'three']);
+            $expected = ['one' => null, 'two' => null, 'three' => null];
+            expect($result)->toBe($expected);
+
+            $result = Set::normalize(['one' => ['a', 'b', 'c' => 'd'], 'two' => 2, 'three']);
+            $expected = ['one' => ['a', 'b', 'c' => 'd'], 'two' => 2, 'three' => null];
+            expect($result)->toBe($expected);
+
+        });
+
+        it("throws with non-normalizable array", function() {
+
+            $closure = function() {
+                Set::normalize([['a', 'b', 'c' => 'd'], 'two' => 2, 'three']);
+            };
+            expect($closure)->toThrow(new Exception("Invalid array format, a value can't be normalized"));
 
         });
 
