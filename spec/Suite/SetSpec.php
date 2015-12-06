@@ -1,7 +1,7 @@
 <?php
-namespace set\spec\suite;
+namespace Lead\Set\Spec\Suite;
 
-use set\Set;
+use Lead\Set\Set;
 use Exception;
 use BadFunctionCallException;
 

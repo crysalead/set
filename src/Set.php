@@ -1,5 +1,5 @@
 <?php
-namespace set;
+namespace Lead\Set;
 
 use Exception;
 use BadFunctionCallException;
