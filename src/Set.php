@@ -60,13 +60,18 @@ class Set
      *
      * @param  array $data    Array to flatten.
      * @param  array $options Available options are:
-     *                        - `'separator'`: String to separate array keys in path (defaults to `'.'`).
-     *                        - `'path'`: Starting point (defaults to null).
+     *                        - `'separator'` _string_: String to separate array keys in path (defaults to `'.'`).
+     *                        - `'affix'`     _string_: The affix value (defaults to `null`).
+     *                        - `'path'`      _string_: Starting point (defaults to `null`).
      * @return array
      */
     public static function flatten($data, $options = [])
     {
-        $defaults = ['separator' => '.', 'path' => null];
+        $defaults = [
+            'separator' => '.',
+            'affix'     => null,
+            'path'      => null
+        ];
         $options += $defaults;
         $result = [];
 
@@ -78,7 +83,11 @@ class Set
                 $result[$options['path'] . $key] = $val;
                 continue;
             }
-            $opts = ['separator' => $options['separator'], 'path' => $options['path'] . $key];
+            if ($key === $options['affix']) {
+                $options['path'] = substr($options['path'], 0, -1);
+                $key = '';
+            }
+            $opts = ['separator' => $options['separator'], 'affix' => $options['affix'], 'path' => $options['path'] . $key];
             $result += (array) static::flatten($val, $opts);
         }
         return $result;
@@ -89,16 +98,19 @@ class Set
      *
      * @param  array $data    The one-dimensional array to expand.
      * @param  array $options The options used when expanding the array:
-     *                        - `'separator'` _string_: The delimiter to use when separating keys.
-     *                        (defaults to `'.'`).
+     *                        - `'separator'` _string_: The delimiter to use when separating keys (defaults to `'.'`).
+     *                        - `'affix'`     _string_: The affix value (defaults to `null`).
      * @return array          Returns a multi-dimensional array expanded from a one dimensional
      *                        dot-separated array.
      */
     public static function expand($data, $options =[])
     {
-        $defaults = ['separator' => '.'];
+        $defaults = [
+            'separator' => '.',
+            'affix'     => null
+        ];
         $options += $defaults;
-        $result = array();
+        $result = [];
 
         foreach ($data as $key => $val) {
             if (strpos($key, $options['separator']) === false) {
@@ -109,7 +121,11 @@ class Set
             }
             list($path, $key) = explode($options['separator'], $key, 2);
             $path = is_numeric($path) ? intval($path) : $path;
-            $result[$path][$key] = $val;
+            if ($affix = $options['affix']) {
+                $result[$path][$affix][$key] = $val;
+            } else {
+                $result[$path][$key] = $val;
+            }
         }
         foreach ($result as $key => $value) {
             if (is_array($value)) {

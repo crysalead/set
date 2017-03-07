@@ -66,7 +66,7 @@ describe("Set", function() {
 
     });
 
-    describe("::flatten()", function() {
+    describe("with some data", function() {
 
         $this->expanded = [
             [
@@ -94,18 +94,46 @@ describe("Set", function() {
             '1.Author.password' => null
         ];
 
-        it("flattens", function() {
+        describe("::flatten()", function() {
 
-            $result = Set::flatten($this->expanded);
-            expect($result)->toBe($this->flattened);
+            it("flattens", function() {
+
+                $result = Set::flatten($this->expanded);
+                expect($result)->toBe($this->flattened);
+
+            });
+
+            it("supports the affix option", function() {
+
+                $actual = Set::flatten(['some' => ['children' => ['very' => ['children' => ['deep' => ['children' => ['prop' => true ]]]]]]], [
+                  'affix' => 'children'
+                ]);
+                $expected = ['some.very.deep.prop' => true];
+
+                expect($expected)->toBe($actual);
+
+            });
 
         });
 
-        it("expands", function() {
+        describe("::expand()", function() {
 
-            $result = Set::expand($this->flattened);
-            expect($result)->toBe($this->expanded);
+            it("expands", function() {
 
+                $result = Set::expand($this->flattened);
+                expect($result)->toBe($this->expanded);
+
+            });
+
+            it("supports the affix option", function() {
+
+                $actual = Set::expand(['some.very.deep.prop' => true], ['affix' => 'children' ]);
+
+                $expected = ['some' => ['children' => ['very' => ['children' => ['deep' => ['children' => ['prop' => true ]]]]]]];
+
+                expect($expected)->toBe($actual);
+
+            });
         });
 
     });
