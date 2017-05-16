@@ -55,6 +55,53 @@ describe("Set", function() {
 
     });
 
+    describe("::extend()", function() {
+
+        it("extends two array", function() {
+
+            $result = Set::extend(['foo'], ['bar']);
+            expect($result)->toBe(['bar']);
+
+        });
+
+        it("extends an array with an empty array", function() {
+
+            $result = Set::extend(['foo'], []);
+            expect($result)->toBe(['foo']);
+
+        });
+
+        it("extends arrays recursively", function() {
+
+            $a = ['users' => ['joe' => ['id' => 1, 'password' => 'may the force']], 'gun'];
+            $b = ['users' => ['bob' => ['id' => 2, 'password' => 'be with you']], 'ice-cream'];
+            $result = Set::extend($a, $b);
+            expect($result)->toBe([
+                'users' => [
+                    'joe' => ['id' => 1, 'password' => 'may the force'],
+                    'bob' => ['id' => 2, 'password' => 'be with you']
+                ],
+                'ice-cream'
+            ]);
+
+        });
+
+        it("throws an exception with not enough parameters", function() {
+
+            $closure = function() {
+                Set::extend();
+            };
+            expect($closure)->toThrow(new BadFunctionCallException("Not enough parameters"));
+
+            $closure = function() {
+                Set::extend([]);
+            };
+            expect($closure)->toThrow(new BadFunctionCallException("Not enough parameters"));
+
+        });
+
+    });
+
     describe("::slice()", function() {
 
         it("slices two arrays", function() {

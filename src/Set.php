@@ -7,6 +7,32 @@ use BadFunctionCallException;
 class Set
 {
     /**
+     * Extends array parameters recursively.
+     *
+     * @param  array ... list of array to extend.
+     * @return array     The extended array.
+     */
+    public static function extend()
+    {
+        if (func_num_args() < 2) {
+            throw new BadFunctionCallException("Not enough parameters");
+        }
+        $args = func_get_args();
+        $merged = array_shift($args);
+
+        foreach ($args as $source) {
+            foreach ($source as $key => $value) {
+                if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
+                    $merged[$key] = static::merge($merged[$key], $value);
+                } else {
+                    $merged[$key] = $value;
+                }
+            }
+        }
+        return $merged;
+    }
+
+    /**
      * Merging recursively arrays.
      *
      * Override values for strings identical (unlike `array_merge_recursive()`).
