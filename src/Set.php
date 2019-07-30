@@ -52,7 +52,7 @@ class Set
             foreach ($source as $key => $value) {
                 if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
                     $merged[$key] = static::merge($merged[$key], $value);
-                } elseif (is_int($key)) {
+                } elseif (is_int($key) && array_key_exists(0, $source)) {
                     $merged[] = $value;
                 } else {
                     $merged[$key] = $value;

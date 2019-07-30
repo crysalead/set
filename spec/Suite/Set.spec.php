@@ -39,6 +39,17 @@ describe("Set", function() {
 
         });
 
+        it("keeps keys for associative arrays", function() {
+
+            $a = [];
+            $b = [2 => 'test2'];
+            $result = Set::merge($a, $b);
+            expect($result)->toBe([
+                2 => "test2"
+            ]);
+
+        });
+
         it("throws an exception with not enough parameters", function() {
 
             $closure = function() {
